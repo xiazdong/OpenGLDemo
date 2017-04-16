@@ -1,4 +1,4 @@
-package xiazdong.me.opengldemo.util;
+package xiazdong.me.util;
 
 import android.content.res.Configuration;
 import android.os.SystemClock;

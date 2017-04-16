@@ -1,12 +1,10 @@
-package xiazdong.me.opengldemo.util;
+package xiazdong.me.util;
 
 import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import xiazdong.me.opengldemo.R;
 
 /**
  * Created by xiazdong on 17/4/13.

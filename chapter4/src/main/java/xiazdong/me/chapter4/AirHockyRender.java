@@ -1,4 +1,4 @@
-package xiazdong.me.opengldemo;
+package xiazdong.me.chapter4;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -7,9 +7,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import static android.opengl.GLES20.*;
-import static android.opengl.GLUtils.*;
-import static android.opengl.Matrix.*;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -17,12 +14,27 @@ import xiazdong.me.util.AppConfig;
 import xiazdong.me.util.ShaderHelper;
 import xiazdong.me.util.TextResourceReader;
 
+import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
+import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_LINES;
+import static android.opengl.GLES20.GL_POINTS;
+import static android.opengl.GLES20.GL_TRIANGLES;
+import static android.opengl.GLES20.glClear;
+import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glDrawArrays;
+import static android.opengl.GLES20.glEnableVertexAttribArray;
+import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glUniform4f;
+import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES20.glVertexAttribPointer;
+
 
 /**
  * Created by xiazdong on 17/4/5.
  */
 
-public class FirstRender implements GLSurfaceView.Renderer {
+public class AirHockyRender implements GLSurfaceView.Renderer {
 
     private static final int POSITION_COMPONENT_COUNT = 2;
     private static final int BYTES_PER_FLOAT = 4;
@@ -34,7 +46,7 @@ public class FirstRender implements GLSurfaceView.Renderer {
     private int uColorLocation;
     private int aPositionLocation;
 
-    public FirstRender(Context context) {
+    public AirHockyRender(Context context) {
         //顶点属性数组
         float[] tableVertices = {
                 //桌子边框

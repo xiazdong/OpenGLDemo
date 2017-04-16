@@ -1,4 +1,4 @@
-package xiazdong.me.opengldemo.util;
+package xiazdong.me.util;
 
 /**
  * Created by xiazdong on 17/4/13.
