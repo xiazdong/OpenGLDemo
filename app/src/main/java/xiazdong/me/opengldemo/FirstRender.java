@@ -36,6 +36,15 @@ public class FirstRender implements GLSurfaceView.Renderer {
     public FirstRender(Context context) {
         //顶点属性数组
         float[] tableVertices = {
+                //桌子边框
+                -0.55f, 0.53f,
+                0.55f, 0.53f,
+                -0.55f, -0.53f,
+
+                0.55f, 0.53f,
+                -0.55f, -0.53f,
+                0.55f, -0.53f,
+                //桌子
                 -0.5f, -0.5f,
                 0.5f, -0.5f,
                 -0.5f, 0.5f,
@@ -43,10 +52,10 @@ public class FirstRender implements GLSurfaceView.Renderer {
                 0.5f, -0.5f,
                 -0.5f, 0.5f,
                 0.5f, 0.5f,
-
+                //中间线
                 -0.5f, 0f,
                 0.5f, 0f,
-
+                //木椎
                 0f, 0.25f,
                 0f, -0.25f
         };
@@ -89,14 +98,19 @@ public class FirstRender implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         glClear(GL_COLOR_BUFFER_BIT);
+        //桌子边框
+        glUniform4f(uColorLocation, 1f, 0f, 1f, 1f);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        //桌子
         glUniform4f(uColorLocation, 1f, 1f, 1f, 1f); //设置shader中u_Color的值
-        glDrawArrays(GL_TRIANGLES, 0, 6); //第三个参数：读入6个顶点
+        glDrawArrays(GL_TRIANGLES, 6, 6); //第三个参数：读入6个顶点
+        //中间线
         glUniform4f(uColorLocation, 1f, 0f, 0f, 1f);
-        glDrawArrays(GL_LINES, 6, 2);
+        glDrawArrays(GL_LINES, 12, 2);
+        //木椎
         glUniform4f(uColorLocation, 0f, 0f, 1f, 1f);
-        glDrawArrays(GL_POINTS, 8, 1);
+        glDrawArrays(GL_POINTS, 14, 1);
         glUniform4f(uColorLocation, 1f, 0f, 0f, 1f);
-        glDrawArrays(GL_POINTS, 9, 1);
-
+        glDrawArrays(GL_POINTS, 15, 1);
     }
 }
