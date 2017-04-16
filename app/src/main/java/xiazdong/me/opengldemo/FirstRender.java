@@ -13,6 +13,8 @@ import static android.opengl.Matrix.*;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import xiazdong.me.opengldemo.util.AppConfig;
+import xiazdong.me.opengldemo.util.ShaderHelper;
 import xiazdong.me.opengldemo.util.TextResourceReader;
 
 /**
@@ -23,8 +25,13 @@ public class FirstRender implements GLSurfaceView.Renderer {
 
     private static final int POSITION_COMPONENT_COUNT = 2;
     private static final int BYTES_PER_FLOAT = 4;
+    private static final String U_COLOR = "u_Color";
+    private static final String A_POSITION = "a_Position";
     private final FloatBuffer vertexData;
     private Context context;
+    private int program;
+    private int uColorLocation;
+    private int aPositionLocation;
 
     public FirstRender(Context context) {
         //顶点属性数组
@@ -50,9 +57,28 @@ public class FirstRender implements GLSurfaceView.Renderer {
     }
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        glClearColor(1f,0f,0f,0f);
+        glClearColor(0f,0f,0f,0f);
         String vertexShaderSource = TextResourceReader.readTextFileFromResource(context, R.raw.simple_vertex_shader);
         String fragmentShaderSource = TextResourceReader.readTextFileFromResource(context, R.raw.simple_fragment_shader);
+        int vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource);
+        int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
+        program = ShaderHelper.linkProgram(vertexShader, fragmentShader);
+        if (AppConfig.ENABLE_LOG) {
+            ShaderHelper.validateProgram(program);
+        }
+        glUseProgram(program);
+
+        uColorLocation = glGetUniformLocation(program, U_COLOR);
+        aPositionLocation = glGetAttribLocation(program, A_POSITION);
+        vertexData.position(0);
+        /**
+         * 1. 属性的位置
+         * 2. 一个属性有多少个数据，这里是(x,y)，因此是2
+         * 3. 数据类型
+         */
+        glVertexAttribPointer(aPositionLocation, POSITION_COMPONENT_COUNT, GL_FLOAT, false, 0, vertexData);
+        glEnableVertexAttribArray(aPositionLocation);
+
     }
 
     @Override
@@ -63,5 +89,14 @@ public class FirstRender implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         glClear(GL_COLOR_BUFFER_BIT);
+        glUniform4f(uColorLocation, 1f, 1f, 1f, 1f); //设置shader中u_Color的值
+        glDrawArrays(GL_TRIANGLES, 0, 6); //第三个参数：读入6个顶点
+        glUniform4f(uColorLocation, 1f, 0f, 0f, 1f);
+        glDrawArrays(GL_LINES, 6, 2);
+        glUniform4f(uColorLocation, 0f, 0f, 1f, 1f);
+        glDrawArrays(GL_POINTS, 8, 1);
+        glUniform4f(uColorLocation, 1f, 0f, 0f, 1f);
+        glDrawArrays(GL_POINTS, 9, 1);
+
     }
 }
